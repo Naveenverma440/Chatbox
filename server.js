@@ -1,13 +1,19 @@
+const PORT =process.env.PORT || 3000 ;
 const path = require("path");
-const http = require("http");
+//const http = require("http");
 const express = require("express");
-const socketio = require("socket.io");
+//const socketio = require("socket.io");
 const formatMessage = require("./utils/messages");
 const {userJoin,getCurrentUser,userLeave,getRoomUsers } = require("./utils/users");
 
 const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http)
+
+
+//const server = http.createServer(app);
+//const io = socketio(server);
 
 // get index/chat folder live
 app.use(express.static(path.join(__dirname, "public")));
@@ -58,5 +64,11 @@ io.on("connect", (socket) => {
     
   });
 });
-const PORT = 3000 || process.env.PORT;
-server.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
+
+// server.listen(PORT, () => console.log(`Server running on Port ${PORT}`));
+
+
+app.get("/", (req, res)=> ews.sendFile(__dirname + "./public/index.html"))
+http.listen(PORT,()=>{
+    console.log(`Server running on port ${PORT}`)
+})
